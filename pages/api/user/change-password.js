@@ -1,7 +1,7 @@
 import { getSession } from "next-auth/client";
 
-import { connectToDatabase } from "../../../lib/db";
 import { hashPassword, verifyPassword } from "../../../lib/auth";
+import { connectToDatabase } from "../../../lib/db";
 
 async function handler(req, res) {
   if (req.method !== "PATCH") {
@@ -11,7 +11,7 @@ async function handler(req, res) {
   const session = await getSession({ req: req });
 
   if (!session) {
-    res.status(401).json({ message: "Not authenticated" });
+    res.status(401).json({ message: "Not authenticated!" });
     return;
   }
 
@@ -26,7 +26,7 @@ async function handler(req, res) {
   const user = await usersCollection.findOne({ email: userEmail });
 
   if (!user) {
-    res.status(404).json({ message: "User not found" });
+    res.status(404).json({ message: "User not found." });
     client.close();
     return;
   }
@@ -36,7 +36,7 @@ async function handler(req, res) {
   const passwordsAreEqual = await verifyPassword(oldPassword, currentPassword);
 
   if (!passwordsAreEqual) {
-    res.status(403).json({ message: "Invalid password" });
+    res.status(403).json({ message: "Invalid password." });
     client.close();
     return;
   }
@@ -49,7 +49,7 @@ async function handler(req, res) {
   );
 
   client.close();
-  res.status(200).json({ message: "Password updated" });
+  res.status(200).json({ message: "Password updated!" });
 }
 
 export default handler;
